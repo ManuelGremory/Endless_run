@@ -89,14 +89,20 @@ public class GameEngine {
     }
 
     /**
-     * Gestisce le logiche di fine scontro: assegna esperienza, rigenera la salute
-     * e aumenta il contatore delle uccisioni.
+     * Gestisce le logiche di fine scontro: assegna esperienza, rigenera la salute,
+     * aumenta il contatore delle uccisioni e ricarica gli usi delle skill.
      */
     public int resolveEnemyDeath() {
         killCount++;
         int xpGained = 10 + (currentEnemy.getLevel() * 5);
         player.addXp(xpGained);
         player.fullHeal(); // Rigenera tutti gli HP persi a fine scontro
+
+        // Ricarica completamente gli usi di tutte le abilità a fine combattimento
+        for (Skill s : player.getSkills()) {
+            s.restoreUses();
+        }
+
         return xpGained;
     }
 
